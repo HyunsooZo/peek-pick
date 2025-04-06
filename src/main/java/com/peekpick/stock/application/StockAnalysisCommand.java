@@ -18,4 +18,12 @@ public record StockAnalysisCommand(
                 .toList();
         return new GeminiApiGateway.GeminiRequest(List.of(new GeminiApiGateway.GeminiRequest.Content(parts)));
     }
+
+    public StockAnalysisCommand copyWithPrompt(String prompt) {
+        return new StockAnalysisCommand(
+                this.indexTypes,
+                prompt,
+                this.currentDateTime
+        );
+    }
 }
