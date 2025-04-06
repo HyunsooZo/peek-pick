@@ -3,6 +3,7 @@ package com.peekpick.notification.domain
 data class Notification(
     val id: String?,
     val recipient: Recipient,
+    val channel: Channel,
     val contents: MutableList<String>,
     val status: NotificationStatus
 ) {
