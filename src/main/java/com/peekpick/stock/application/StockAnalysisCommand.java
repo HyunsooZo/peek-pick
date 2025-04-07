@@ -1,6 +1,6 @@
 package com.peekpick.stock.application;
 
-import com.peekpick.stock.infrastructure.GeminiApiGateway;
+import com.peekpick.stock.infrastructure.gateway.GeminiApiGateway;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.peekpick.stock.infrastructure;
+package com.peekpick.stock.infrastructure.gateway;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

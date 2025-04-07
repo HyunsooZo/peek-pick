@@ -1,6 +1,6 @@
 package com.peekpick.stock.application;
 
-import com.peekpick.stock.infrastructure.StockAnalysisGateway;
+import com.peekpick.stock.infrastructure.gateway.StockAnalysisGateway;
 import org.springframework.stereotype.Service;
 
 @Service

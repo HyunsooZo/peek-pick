@@ -1,4 +1,4 @@
-package com.peekpick.stock.infrastructure;
+package com.peekpick.stock.infrastructure.gateway;
 
 import jakarta.json.Json;
 import org.slf4j.Logger;
