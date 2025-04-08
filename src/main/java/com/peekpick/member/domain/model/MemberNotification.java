@@ -1,4 +1,4 @@
-package com.peekpick.member.domain;
+package com.peekpick.member.domain.model;
 
 record MemberNotification(
         boolean notificationEnabled,

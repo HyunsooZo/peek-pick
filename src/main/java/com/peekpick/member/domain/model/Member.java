@@ -1,4 +1,4 @@
-package com.peekpick.member.domain;
+package com.peekpick.member.domain.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ public record Member(
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
+
     public Member(
             String nickname,
             String email,
@@ -27,6 +28,30 @@ public record Member(
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
+    }
+
+    public Member(
+            String id,
+            String nickname,
+            String email,
+            boolean notificationEnabled,
+            Integer preferenceHour,
+            List<String> stockCodes,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {
+        this(
+                id,
+                new MemberProfile(nickname, email),
+                new MemberNotification(notificationEnabled, PreferenceTime.of(preferenceHour)),
+                stockCodes,
+                createdAt,
+                updatedAt
+        );
+    }
+
+    public Integer preferenceHour() {
+        return notificationSettings.preferenceTime().startHour();
     }
 
     public Member addStock(String stockCode) {
