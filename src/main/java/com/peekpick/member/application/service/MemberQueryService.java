@@ -1,5 +1,6 @@
 package com.peekpick.member.application.service;
 
+import com.peekpick.member.domain.model.Member;
 import com.peekpick.member.domain.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,5 +16,9 @@ public class MemberQueryService {
 
     public boolean existsByEmail(String email) {
         return memberRepository.existsByEmail(email);
+    }
+
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email);
     }
 }

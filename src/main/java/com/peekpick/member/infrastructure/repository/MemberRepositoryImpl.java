@@ -23,4 +23,9 @@ public class MemberRepositoryImpl implements MemberRepository {
     public Member save(Member member) {
         return memberMongoRepository.save(MemberDocument.from(member)).toDomain();
     }
+
+    @Override
+    public Member findByEmail(String email) {
+        return memberMongoRepository.findByEmail(email).toDomain();
+    }
 }

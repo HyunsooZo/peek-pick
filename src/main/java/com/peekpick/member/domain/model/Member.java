@@ -1,7 +1,6 @@
 package com.peekpick.member.domain.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,50 +53,13 @@ public record Member(
         return notificationSettings.preferenceTime().startHour();
     }
 
-    public Member addStock(String stockCode) {
-        Objects.requireNonNull(stockCode, "Stock cannot be null");
-
-        if (stockCodes.stream().anyMatch(existingCode -> existingCode.equals(stockCode))) {
-            throw new IllegalStateException("Stock with code " + stockCode + " already exists");
-        }
-
-        if (stockCodes.size() >= 5) {
-            throw new IllegalStateException("Cannot add more than 5 stockCodes");
-        }
-
-        var newStocks = new ArrayList<>(stockCodes);
-        newStocks.add(stockCode);
-
-        return new Member(
-                this.id,
-                this.profile,
-                this.notificationSettings,
-                newStocks,
-                this.createdAt,
-                LocalDateTime.now()
-        );
-    }
-
-    public Member removeStock(String stockCode) {
-        Objects.requireNonNull(stockCode, "Stock cannot be null");
-
-        if (stockCodes.stream().noneMatch(existingCode ->existingCode.equals(stockCode))) {
-            throw new IllegalStateException("Stock with code " + stockCode + " does not exist");
-        }
-
-        var newStocks = stockCodes.stream().filter(existing -> !existing.equals(stockCode)).toList();
-
-        return new Member(
-                this.id,
-                this.profile,
-                this.notificationSettings,
-                newStocks,
-                this.createdAt,
-                LocalDateTime.now()
-        );
-    }
-
     public Member updateNickname(String nickname) {
+        if (Objects.isNull(nickname)) {
+            return this;
+        }
+        if (nickname.length() < 2 || nickname.length() > 10) {
+            throw new IllegalArgumentException("Nickname must be between 2 and 10 characters");
+        }
         return new Member(
                 this.id,
                 this.profile.updateNickname(nickname),
@@ -108,7 +70,23 @@ public record Member(
         );
     }
 
+    public String email() {
+        return profile.email();
+    }
+
+    public String nickname() {
+        return profile.nickname();
+    }
+
+    public List<String> stocks() {
+        return this.stockCodes == null ? List.of() : this.stockCodes;
+    }
+
     public Member updateEmail(String email) {
+        if (Objects.isNull(email)) return this;
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
         return new Member(
                 this.id,
                 this.profile.updateEmail(email),
@@ -120,6 +98,7 @@ public record Member(
     }
 
     public Member updatePreferenceHour(Integer preferenceHour) {
+        if (Objects.isNull(preferenceHour)) return this;
         return new Member(
                 this.id,
                 this.profile,
@@ -130,37 +109,36 @@ public record Member(
         );
     }
 
-    public Member receiveNotification() {
-        return new Member(
-                this.id,
-                this.profile,
-                this.notificationSettings.receiveNotification(),
-                this.stockCodes,
-                this.createdAt,
-                LocalDateTime.now()
-        );
-    }
-
-    public Member stopNotification() {
-        return new Member(
-                this.id,
-                this.profile,
-                this.notificationSettings.stopNotification(),
-                this.stockCodes,
-                this.createdAt,
-                LocalDateTime.now()
-        );
-    }
-
-    public String email(){
-        return profile.email();
-    }
-
-    public String nickname(){
-        return profile.nickname();
-    }
-
     public boolean isNotificationEnabled(){
         return notificationSettings.notificationEnabled();
+    }
+
+    public Member updateStocks(List<String> stocks) {
+        if (stocks.isEmpty()) return this;
+        return new Member(
+                this.id,
+                this.profile,
+                this.notificationSettings,
+                stocks,
+                this.createdAt,
+                LocalDateTime.now()
+        );
+    }
+
+
+    public Boolean notificationEnabled() {
+        return this.notificationSettings.notificationEnabled();
+    }
+
+    public Member updateNotification(Boolean enable) {
+        if (enable == null) return this;
+        return new Member(
+                this.id,
+                this.profile,
+                enable ? this.notificationSettings.receiveNotification() : this.notificationSettings.stopNotification(),
+                this.stockCodes,
+                this.createdAt,
+                LocalDateTime.now()
+        );
     }
 }

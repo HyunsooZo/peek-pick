@@ -2,10 +2,11 @@ package com.peekpick.member.application.data;
 
 import java.util.List;
 
-public record MemberRegistrationCommand(
+public record MemberModification(
         String nickname,
         String email,
         Integer preferenceHour,
-        List<String> stocks
+        List<String> stocks,
+        Boolean notificationEnabled
 ) {
 }
