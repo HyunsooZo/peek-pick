@@ -18,7 +18,7 @@ public class MemberInformationController {
             @RequestBody MemberInformationPayload.InformationRequest request
     ) {
         final var memberInfo = memberInformationService.register(request.toRegistration());
-        return ResponseEntity.ok(MemberInformationPayload.InformationResponse.from(memberInfo));
+        return ResponseEntity.ok(MemberInformationMapper.mapToResponse(memberInfo));
     }
 
     @PatchMapping("/update")
@@ -26,6 +26,6 @@ public class MemberInformationController {
             @RequestBody MemberInformationPayload.InformationRequest request
     ) {
         final var memberInfo = memberInformationService.update(request.toModification());
-        return ResponseEntity.ok(MemberInformationPayload.InformationResponse.from(memberInfo));
+        return ResponseEntity.ok(MemberInformationMapper.mapToResponse(memberInfo));
     }
 }

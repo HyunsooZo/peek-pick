@@ -31,14 +31,5 @@ public record MemberInformationPayload() {
             List<String> stocks,
             Boolean notificationEnabled
     ) {
-        public static InformationResponse from(MemberInfoResult register) {
-            return new InformationResponse(
-                    register.nickname(),
-                    register.email(),
-                    register.preferenceHour(),
-                    register.stocks(),
-                    register.notificationEnabled()
-            );
-        }
     }
 }
