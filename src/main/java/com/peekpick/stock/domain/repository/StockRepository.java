@@ -4,7 +4,6 @@ import com.peekpick.stock.application.StockAnalysisResult;
 import com.peekpick.stock.domain.model.Stock;
 
 import java.util.List;
-import java.util.Map;
 
 public interface StockRepository {
     List<Stock> fetchAll();
