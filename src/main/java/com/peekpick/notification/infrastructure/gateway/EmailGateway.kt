@@ -1,4 +1,4 @@
-package com.peekpick.notification.infrastructure
+package com.peekpick.notification.infrastructure.gateway
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

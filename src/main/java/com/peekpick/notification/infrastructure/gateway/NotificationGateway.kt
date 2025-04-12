@@ -1,4 +1,4 @@
-package com.peekpick.notification.infrastructure
+package com.peekpick.notification.infrastructure.gateway
 
 interface NotificationGateway {
     fun sendNotification(
