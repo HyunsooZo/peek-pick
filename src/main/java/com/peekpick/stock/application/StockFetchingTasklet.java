@@ -9,13 +9,13 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FetchStockTasklet implements Tasklet {
+public class StockFetchingTasklet implements Tasklet {
 
     private final Logger logger;
     private final StockQueryService stockQueryService;
 
-    public FetchStockTasklet(StockQueryService stockQueryService) {
-        this.logger = LoggerFactory.getLogger(FetchStockTasklet.class);
+    public StockFetchingTasklet(StockQueryService stockQueryService) {
+        this.logger = LoggerFactory.getLogger(StockFetchingTasklet.class);
         this.stockQueryService = stockQueryService;
     }
 

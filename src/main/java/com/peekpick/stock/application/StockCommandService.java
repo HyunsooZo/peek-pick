@@ -15,7 +15,7 @@ public class StockCommandService {
         this.logger = LoggerFactory.getLogger(StockQueryService.class);
     }
 
-    public void updateAll(StockAnalysisResult stockAnalysisResult) {
+    public void updateAll(StockApplicationData.StockAnalysisResult stockAnalysisResult) {
         logger.info("[STOCK COMMAND SERVICE] Updating stocks...");
         stockRepository.updateAll(stockAnalysisResult.indexAnalysis());
         logger.info("[STOCK COMMAND SERVICE] Successfully updated stocks");

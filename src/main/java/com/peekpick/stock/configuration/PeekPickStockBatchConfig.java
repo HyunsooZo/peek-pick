@@ -1,6 +1,6 @@
 package com.peekpick.stock.configuration;
 
-import com.peekpick.stock.application.FetchStockTasklet;
+import com.peekpick.stock.application.StockFetchingTasklet;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -17,12 +17,12 @@ public class PeekPickStockBatchConfig {
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
-    private final FetchStockTasklet tasklet;
+    private final StockFetchingTasklet tasklet;
 
     public PeekPickStockBatchConfig(
             JobRepository jobRepository,
             PlatformTransactionManager transactionManager,
-            FetchStockTasklet tasklet
+            StockFetchingTasklet tasklet
     ) {
         this.jobRepository = jobRepository;
         this.transactionManager = transactionManager;

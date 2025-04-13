@@ -12,13 +12,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
-public class AnalyzeStockTasklet implements Tasklet {
+public class StockAnalysisTasklet implements Tasklet {
 
     private final Logger logger;
     private final StockAnalysisService stockAnalysisService;
 
-    public AnalyzeStockTasklet(StockAnalysisService stockAnalysisService) {
-        this.logger = org.slf4j.LoggerFactory.getLogger(AnalyzeStockTasklet.class);
+    public StockAnalysisTasklet(StockAnalysisService stockAnalysisService) {
+        this.logger = org.slf4j.LoggerFactory.getLogger(StockAnalysisTasklet.class);
         this.stockAnalysisService = stockAnalysisService;
     }
 
@@ -33,7 +33,7 @@ public class AnalyzeStockTasklet implements Tasklet {
             var stocks = (List<Stock>) rawList;
             var indexNames = stocks.stream().map(Stock::market).map(Enum::name).toList();
             logger.info("[ANALYZE STOCK TASKLET] Analyzing stocks...");
-            var command = new StockAnalysisCommand(indexNames, "init", LocalDateTime.now());
+            var command = new StockApplicationData.StockAnalysisCommand(indexNames, "init", LocalDateTime.now());
             var stockAnalysisResult = stockAnalysisService.analyzeIndex(command);
             chunkContext.getStepContext().getStepExecution().getExecutionContext().put("stockAnalysisResult", stockAnalysisResult);
             logger.info("[ANALYZE STOCK TASKLET] Successfully analyzed stocks");

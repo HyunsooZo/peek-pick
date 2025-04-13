@@ -7,13 +7,13 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
-public class SaveStockTasklet implements Tasklet {
+public class StockSavingTasklet implements Tasklet {
 
     private final Logger logger;
     private final StockCommandService stockCommandService;
 
-    public SaveStockTasklet(StockCommandService stockCommandService) {
-        this.logger = LoggerFactory.getLogger(FetchStockTasklet.class);
+    public StockSavingTasklet(StockCommandService stockCommandService) {
+        this.logger = LoggerFactory.getLogger(StockFetchingTasklet.class);
         this.stockCommandService = stockCommandService;
     }
 
@@ -24,8 +24,8 @@ public class SaveStockTasklet implements Tasklet {
     ) {
         logger.info("[SAVE STOCK TASKLET] Saving stocks...");
         var stockAnalysisResult = chunkContext.getStepContext().getStepExecution().getExecutionContext().get("stockAnalysisResult");
-        if (stockAnalysisResult instanceof StockAnalysisResult) {
-            stockCommandService.updateAll( (StockAnalysisResult) stockAnalysisResult);
+        if (stockAnalysisResult instanceof StockApplicationData.StockAnalysisResult) {
+            stockCommandService.updateAll( (StockApplicationData.StockAnalysisResult) stockAnalysisResult);
             logger.info("[SAVE STOCK TASKLET] Successfully saved stocks");
         } else {
             logger.warn("[SAVE STOCK TASKLET] No stock analysis result found to save");

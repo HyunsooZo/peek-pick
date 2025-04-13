@@ -1,6 +1,6 @@
 package com.peekpick.stock.infrastructure.persistence.repository;
 
-import com.peekpick.stock.application.StockAnalysisResult;
+import com.peekpick.stock.application.StockApplicationData;
 import com.peekpick.stock.domain.model.Stock;
 import com.peekpick.stock.domain.repository.StockRepository;
 import com.peekpick.stock.infrastructure.persistence.mongo.StockDocument;
@@ -33,7 +33,7 @@ public class StockRepositoryImpl implements StockRepository {
     }
 
     @Override
-    public void updateAll(List<StockAnalysisResult.IndexAnalysis> indexAnalyses) {
+    public void updateAll(List<StockApplicationData.StockAnalysisResult.IndexAnalysis> indexAnalyses) {
         BulkOperations ops = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, StockDocument.class);
         for (var indexAnalysis : indexAnalyses) {
             final var query = Query.query(Criteria.where("IndexType").is(indexAnalysis.indexName()));

@@ -16,12 +16,14 @@ public class StockAnalysisService {
         this.stockAnalysisGateway = stockAnalysisGateway;
     }
 
-    public StockAnalysisResult analyzeIndex(StockAnalysisCommand command) {
+    public StockApplicationData.StockAnalysisResult analyzeIndex(
+            StockApplicationData.StockAnalysisCommand command
+    ) {
         var analysis = stockAnalysisGateway.analyze(command.copyWithPrompt(PROMPT).toApiRequest());
         var analysisMap = analysis.indexAnalysis();
         var indexAnalysisList = analysisMap.entrySet().stream()
-                .map(entry -> new StockAnalysisResult.IndexAnalysis(entry.getKey(), entry.getValue()))
+                .map(entry -> new StockApplicationData.StockAnalysisResult.IndexAnalysis(entry.getKey(), entry.getValue()))
                 .toList();
-        return new StockAnalysisResult(indexAnalysisList);
+        return new StockApplicationData.StockAnalysisResult(indexAnalysisList);
     }
 }
