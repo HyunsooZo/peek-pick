@@ -1,10 +1,10 @@
 package com.peekpick.member.presentation;
 
-import com.peekpick.member.application.data.MemberInfoResult;
+import com.peekpick.member.application.MemberApplicationData;
 
 public class MemberInformationMapper {
     public static MemberInformationPayload.InformationResponse mapToResponse(
-            MemberInfoResult memberInformation
+            MemberApplicationData.MemberInfoResult memberInformation
     ) {
         return new MemberInformationPayload.InformationResponse(
                 memberInformation.nickname(),

@@ -1,8 +1,6 @@
 package com.peekpick.member.presentation;
 
-import com.peekpick.member.application.data.MemberInfoResult;
-import com.peekpick.member.application.data.MemberModification;
-import com.peekpick.member.application.data.MemberRegistration;
+import com.peekpick.member.application.MemberApplicationData;
 
 import java.util.List;
 
@@ -15,12 +13,12 @@ public record MemberInformationPayload() {
             List<String> stocks,
             Boolean notificationEnabled
     ) {
-        public MemberRegistration toRegistration() {
-            return new MemberRegistration(nickname, email, preferenceHour, stocks);
+        public MemberApplicationData.MemberRegistration toRegistration() {
+            return new MemberApplicationData.MemberRegistration(nickname, email, preferenceHour, stocks);
         }
 
-        public MemberModification toModification() {
-            return new MemberModification(nickname, email, preferenceHour, stocks, notificationEnabled);
+        public MemberApplicationData.MemberModification toModification() {
+            return new MemberApplicationData.MemberModification(nickname, email, preferenceHour, stocks, notificationEnabled);
         }
     }
 

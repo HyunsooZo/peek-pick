@@ -1,4 +1,4 @@
-package com.peekpick.member.application.service;
+package com.peekpick.member.application;
 
 import com.peekpick.member.domain.model.Member;
 import com.peekpick.member.domain.repository.MemberRepository;

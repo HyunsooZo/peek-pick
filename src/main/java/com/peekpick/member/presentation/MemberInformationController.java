@@ -1,6 +1,6 @@
 package com.peekpick.member.presentation;
 
-import com.peekpick.member.application.service.MemberInformationService;
+import com.peekpick.member.application.MemberInformationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,8 +1,5 @@
-package com.peekpick.member.application.service;
+package com.peekpick.member.application;
 
-import com.peekpick.member.application.data.MemberInfoResult;
-import com.peekpick.member.application.data.MemberModification;
-import com.peekpick.member.application.data.MemberRegistration;
 import com.peekpick.member.domain.model.Member;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +16,13 @@ public class MemberInformationService {
         this.memberCommandService = memberCommandService;
     }
 
-    public MemberInfoResult register(MemberRegistration command) {
+    public MemberApplicationData.MemberInfoResult register(MemberApplicationData.MemberRegistration command) {
         if (memberQueryService.existsByEmail(command.email())) {
             throw new IllegalArgumentException("Email already exists");
         }
         final var member = new Member(command.nickname(), command.email(), command.preferenceHour(), command.stocks());
         final var savedMember = memberCommandService.save(member);
-        return new MemberInfoResult(
+        return new MemberApplicationData.MemberInfoResult(
                 savedMember.nickname(),
                 savedMember.email(),
                 savedMember.preferenceHour(),
@@ -34,7 +31,7 @@ public class MemberInformationService {
         );
     }
 
-    public MemberInfoResult update(MemberModification command) {
+    public MemberApplicationData.MemberInfoResult update(MemberApplicationData.MemberModification command) {
         final var member = memberQueryService.findByEmail(command.email());
         final var updatedMember = member.updateEmail(command.email())
                 .updateNickname(command.nickname())
@@ -42,7 +39,7 @@ public class MemberInformationService {
                 .updateStocks(command.stocks())
                 .updateNotification(command.notificationEnabled());
         final var savedMember = memberCommandService.save(updatedMember);
-        return new MemberInfoResult(
+        return new MemberApplicationData.MemberInfoResult(
                 savedMember.nickname(),
                 savedMember.email(),
                 savedMember.preferenceHour(),
