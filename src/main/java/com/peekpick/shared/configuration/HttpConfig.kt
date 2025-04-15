@@ -9,9 +9,6 @@ import org.springframework.web.client.RestClient
 class HttpConfig {
     @Bean
     fun restClient(configurer: RestClientBuilderConfigurer): RestClient {
-        val builder = configurer.configure(RestClient.builder())
-        return builder
-            .baseUrl("https://your-default-base-url.com")
-            .build()
+        return RestClient.builder().build()
     }
 }
