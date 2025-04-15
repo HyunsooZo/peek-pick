@@ -2,16 +2,19 @@ package com.peekpick.stock.application;
 
 import com.peekpick.stock.infrastructure.gateway.GeminiApiGateway;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public record StockApplicationData() {
-    public record StockResult(List<StockInformation> stockInformation) {
+    public record StockResult(
+            List<StockInformation> stockInformation
+    ) implements Serializable {
         public record StockInformation(
                 String stockId,
                 String stockCode,
                 String stockMarket
-        ) {}
+        ) implements Serializable {}
     }
     public record StockAnalysisCommand(
             List<String> indexTypes,

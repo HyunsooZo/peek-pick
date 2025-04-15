@@ -13,7 +13,10 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -42,10 +45,14 @@ public class PeekPickStockBatchConfig {
     }
 
     @Bean
-    public JobRepository jobRepository(PlatformTransactionManager batchTransactionManager, DataSource dataSource) throws Exception {
-        JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();
+    public JobRepository jobRepository(
+            PlatformTransactionManager batchTransactionManager,
+            DataSource dataSource
+    ) throws Exception {
+        final var factory = new JobRepositoryFactoryBean();
         factory.setDataSource(dataSource);
         factory.setTransactionManager(batchTransactionManager);
+        factory.setDatabaseType("h2");
         factory.afterPropertiesSet();
         return factory.getObject();
     }
@@ -58,13 +65,28 @@ public class PeekPickStockBatchConfig {
     // TODO : Use a real database for production environment batch metadata
     @Bean(name = "dataSource")
     public DataSource dataSource() {
-        return new org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder()
-                .setType(org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2)
+        return new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.H2)
                 .setName("BATCH_METADATA")
+                .addScript("classpath:org/springframework/batch/core/schema-h2.sql")
                 .build();
     }
 
+    @Bean
+    @Profile("dev")
+    public Job peekPickStockJobDev(
+            JobRepository jobRepository,
+            PlatformTransactionManager batchTransactionManager
+    ) {
+        return new JobBuilder("peekPickStockJob", jobRepository)
+                .start(this.fetchStockStepDev(jobRepository, batchTransactionManager))
+                .next(this.analyzeStockStepDev(jobRepository, batchTransactionManager))
+                .next(this.saveAllStockStepDev(jobRepository, batchTransactionManager))
+                .build();
+    }
 
+    @Bean
+    @Profile("prod")
     public Job peekPickStockJob(JobRepository jobRepository) {
         return new JobBuilder("peekPickStockJob", jobRepository)
                 .start(this.fetchStockStep(jobRepository))
@@ -74,6 +96,40 @@ public class PeekPickStockBatchConfig {
     }
 
     @Bean
+    @Profile("dev")
+    public Step fetchStockStepDev(
+            JobRepository jobRepository,
+            PlatformTransactionManager batchTransactionManager
+    ) {
+        return new StepBuilder("fetchStockStep", jobRepository)
+                .tasklet(fetchingTasklet, batchTransactionManager)
+                .build();
+    }
+
+    @Bean
+    @Profile("dev")
+    public Step analyzeStockStepDev(
+            JobRepository jobRepository,
+            PlatformTransactionManager batchTransactionManager
+    ) {
+        return new StepBuilder("analyzeStockStep", jobRepository)
+                .tasklet(analysisTasklet, batchTransactionManager)
+                .build();
+    }
+
+    @Bean
+    @Profile("dev")
+    public Step saveAllStockStepDev(
+            JobRepository jobRepository,
+            PlatformTransactionManager batchTransactionManager
+    ) {
+        return new StepBuilder("saveAllStockStep", jobRepository)
+                .tasklet(savingTasklet, batchTransactionManager)
+                .build();
+    }
+
+    @Bean
+    @Profile("prod")
     public Step fetchStockStep(JobRepository jobRepository) {
         return new StepBuilder("fetchStockStep", jobRepository)
                 .tasklet(fetchingTasklet, mongoTransactionManager)
@@ -81,6 +137,7 @@ public class PeekPickStockBatchConfig {
     }
 
     @Bean
+    @Profile("prod")
     public Step analyzeStockStep(JobRepository jobRepository) {
         return new StepBuilder("analyzeStockStep", jobRepository)
                 .tasklet(analysisTasklet, mongoTransactionManager)
@@ -88,6 +145,7 @@ public class PeekPickStockBatchConfig {
     }
 
     @Bean
+    @Profile("prod")
     public Step saveAllStockStep(JobRepository jobRepository) {
         return new StepBuilder("saveAllStockStep", jobRepository)
                 .tasklet(savingTasklet, mongoTransactionManager)
