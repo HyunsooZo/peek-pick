@@ -22,10 +22,6 @@ data class NotificationMessage(
         return recipient.recipientAddress
     }
 
-    fun isPending(): Boolean {
-        return status == NotificationStatus.PENDING
-    }
-
     fun isSent(): Boolean {
         return status == NotificationStatus.SENT
     }
@@ -41,4 +37,13 @@ data class NotificationMessage(
     fun content(): String {
         return this.contents
     }
+
+    fun fail(): NotificationMessage {
+        return this.copy(status = NotificationStatus.FAILED)
+    }
+
+    fun success():NotificationMessage{
+        return this.copy(status = NotificationStatus.SENT)
+    }
+
 }

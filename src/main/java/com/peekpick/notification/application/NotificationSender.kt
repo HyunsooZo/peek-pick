@@ -7,10 +7,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class NotificationSendingService(
+class NotificationSender(
     private val notificationGateway: NotificationGateway
 ) {
-    private val log: Logger = LoggerFactory.getLogger(NotificationSendingService::class.java)
+    private val log: Logger = LoggerFactory.getLogger(NotificationSender::class.java)
 
     fun sendNotification(
         recipientName: String,
@@ -24,10 +24,14 @@ class NotificationSendingService(
         require(recipientAddress.isNotBlank()) { "Recipient email must not be blank" }
         require(recipientScheduledTime in 0..24) { "Scheduled time must be between 0 and 24" }
 
-        notificationGateway.sendNotification(
-            address = recipientAddress,
-            subject = subject,
-            content = content
-        )
+        try {
+            notificationGateway.sendNotification(
+                address = recipientAddress,
+                subject = subject,
+                content = content
+            )
+        } catch (e: Exception) {
+            log.error("[NOTIFICATION SENDING SERVICE] Error occurred while sending notification: ${e.message}")
+        }
     }
 }
