@@ -6,6 +6,8 @@ import com.peekpick.member.infrastructure.mongo.MemberDocument;
 import com.peekpick.member.infrastructure.mongo.MemberMongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class MemberRepositoryImpl implements MemberRepository {
     private final MemberMongoRepository memberMongoRepository;
@@ -27,5 +29,10 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public Member findByEmail(String email) {
         return memberMongoRepository.findByEmail(email).toDomain();
+    }
+
+    @Override
+    public List<Member> findByScheduledTime(Integer time) {
+        return memberMongoRepository.findAllByPreferenceHour(time).stream().map(MemberDocument::toDomain).toList();
     }
 }

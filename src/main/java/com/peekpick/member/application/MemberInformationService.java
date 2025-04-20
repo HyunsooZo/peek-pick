@@ -22,13 +22,8 @@ public class MemberInformationService {
         }
         final var member = new Member(command.nickname(), command.email(), command.preferenceHour(), command.stocks());
         final var savedMember = memberCommandService.save(member);
-        return new MemberApplicationData.MemberInfoResult(
-                savedMember.nickname(),
-                savedMember.email(),
-                savedMember.preferenceHour(),
-                savedMember.stocks(),
-                savedMember.notificationEnabled()
-        );
+        return savedMember.toApplicationData();
+
     }
 
     public MemberApplicationData.MemberInfoResult update(MemberApplicationData.MemberModification command) {
@@ -39,12 +34,6 @@ public class MemberInformationService {
                 .updateStocks(command.stocks())
                 .updateNotification(command.notificationEnabled());
         final var savedMember = memberCommandService.save(updatedMember);
-        return new MemberApplicationData.MemberInfoResult(
-                savedMember.nickname(),
-                savedMember.email(),
-                savedMember.preferenceHour(),
-                savedMember.stocks(),
-                savedMember.notificationEnabled()
-        );
+        return savedMember.toApplicationData();
     }
 }

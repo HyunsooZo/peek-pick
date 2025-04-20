@@ -1,5 +1,7 @@
 package com.peekpick.member.domain.model;
 
+import com.peekpick.member.application.MemberApplicationData;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -139,6 +141,16 @@ public record Member(
                 this.stockCodes,
                 this.createdAt,
                 LocalDateTime.now()
+        );
+    }
+
+    public MemberApplicationData.MemberInfoResult toApplicationData() {
+        return new MemberApplicationData.MemberInfoResult(
+                this.nickname(),
+                this.email(),
+                this.preferenceHour(),
+                this.stocks(),
+                this.notificationEnabled()
         );
     }
 }
