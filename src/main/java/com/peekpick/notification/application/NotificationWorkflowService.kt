@@ -9,16 +9,15 @@ import org.springframework.stereotype.Service
 class NotificationWorkflowService(
     @Qualifier("inMemory")
     private val queue: MessageQueue,
-    private val notificationSender: NotificationSender,
-    private val notificationCommandService: NotificationCommandService,
+    private val notificationSendService: NotificationSendService,
+    private val notificationCommandService: NotificationCommandService
 ) {
     private val log = LoggerFactory.getLogger(NotificationWorkflowService::class.java)
-
     fun processNext() {
         if (queue.isEmpty()) return
         val message = queue.poll() ?: return
         try {
-            notificationSender.sendNotification(
+            notificationSendService.sendNotification(
                 recipientName = message.recipientName(),
                 recipientAddress = message.recipientAddress(),
                 recipientChannel = message.recipientChannel(),

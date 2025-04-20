@@ -7,10 +7,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class NotificationSender(
+class NotificationSendService(
     private val notificationGateway: NotificationGateway
 ) {
-    private val log: Logger = LoggerFactory.getLogger(NotificationSender::class.java)
+    private val log: Logger = LoggerFactory.getLogger(NotificationSendService::class.java)
 
     fun sendNotification(
         recipientName: String,
