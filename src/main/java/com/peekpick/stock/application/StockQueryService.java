@@ -1,9 +1,12 @@
 package com.peekpick.stock.application;
 
+import com.peekpick.stock.domain.model.Stock;
 import com.peekpick.stock.domain.repository.StockRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class StockQueryService {
@@ -25,5 +28,9 @@ public class StockQueryService {
                 stock.market().name()
         )).toList();
         return new StockApplicationData.StockResult(stockInformation);
+    }
+
+    public List<StockApplicationData.StockAnalysisInfoResult> fetchAllAnalysisStocks() {
+        return stockRepository.fetchAll().stream().map(Stock::toSharedDTO).toList();
     }
 }

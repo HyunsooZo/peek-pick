@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record StockApplicationData() {
+
     public record StockResult(
             List<StockInformation> stockInformation
     ) implements Serializable {
@@ -16,6 +17,7 @@ public record StockApplicationData() {
                 String stockMarket
         ) implements Serializable {}
     }
+
     public record StockAnalysisCommand(
             List<String> indexTypes,
             String prompt,
@@ -42,5 +44,13 @@ public record StockApplicationData() {
     public record StockAnalysisResult(List<StockApplicationData.StockAnalysisResult.IndexAnalysis> indexAnalysis) {
         public record IndexAnalysis(String indexName, String indexAnalysis) {}
     }
+
+    public record StockAnalysisInfoResult(
+            String stockId,
+            String stockCode,
+            String stockMarket,
+            String indexName,
+            String indexAnalysis
+    ) {}
 }
 

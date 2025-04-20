@@ -1,5 +1,7 @@
 package com.peekpick.stock.domain.model;
 
+import com.peekpick.stock.application.StockApplicationData;
+
 import java.time.LocalDateTime;
 
 public record Stock(
@@ -52,4 +54,13 @@ public record Stock(
         return this.analysis.toHtmlString();
     }
 
+    public StockApplicationData.StockAnalysisInfoResult toSharedDTO() {
+        return new StockApplicationData.StockAnalysisInfoResult(
+                this.id,
+                this.code,
+                this.attributes.market().name(),
+                this.analysis.marketName(),
+                this.analysisContent()
+        );
+    }
 }
