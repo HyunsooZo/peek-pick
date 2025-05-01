@@ -1,4 +1,4 @@
-package com.peekpick.notification.application
+package com.peekpick.notification.application.service
 
 import com.peekpick.notification.domain.Channel
 import com.peekpick.notification.infrastructure.gateway.NotificationGateway
@@ -7,10 +7,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class NotificationSendService(
+class MessageSendingService(
     private val notificationGateway: NotificationGateway
 ) {
-    private val log: Logger = LoggerFactory.getLogger(NotificationSendService::class.java)
+    private val log: Logger = LoggerFactory.getLogger(MessageSendingService::class.java)
 
     fun sendNotification(
         recipientName: String,

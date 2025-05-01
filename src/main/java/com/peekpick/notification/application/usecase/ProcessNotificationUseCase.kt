@@ -1,23 +1,28 @@
-package com.peekpick.notification.application
+package com.peekpick.notification.application.usecase
 
+import com.peekpick.notification.application.service.MessageSendingService
+import com.peekpick.notification.application.service.NotificationCommandService
 import com.peekpick.notification.infrastructure.queue.MessageQueue
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 
+interface ProcessNotificationUseCase{
+    fun proceed()
+}
 @Service
-class NotificationWorkflowService(
+class ProcessNotificationUseCaseImpl(
     @Qualifier("inMemory")
     private val queue: MessageQueue,
-    private val notificationSendService: NotificationSendService,
+    private val messageSendingService: MessageSendingService,
     private val notificationCommandService: NotificationCommandService
-) {
-    private val log = LoggerFactory.getLogger(NotificationWorkflowService::class.java)
-    fun processNext() {
+) : ProcessNotificationUseCase {
+    private val log = LoggerFactory.getLogger(ProcessNotificationUseCase::class.java)
+    override fun proceed() {
         if (queue.isEmpty()) return
         val message = queue.poll() ?: return
         try {
-            notificationSendService.sendNotification(
+            messageSendingService.sendNotification(
                 recipientName = message.recipientName(),
                 recipientAddress = message.recipientAddress(),
                 recipientChannel = message.recipientChannel(),

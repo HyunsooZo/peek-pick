@@ -1,4 +1,4 @@
-package com.peekpick.notification.application
+package com.peekpick.notification.application.usecase
 
 import com.peekpick.member.application.MemberQueryService
 import com.peekpick.notification.domain.Channel
@@ -10,14 +10,17 @@ import com.peekpick.stock.application.StockQueryService
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 
+interface CreateNotificationUseCase{
+    fun createNotificationMessagesByScheduledTime(time: Int)
+}
 @Service
-class NotificationSettingService(
+class CreateNotificationUseCaseImpl(
     @Qualifier("inMemory")
     private val messageQueue: MessageQueue,
     private val memberQueryService: MemberQueryService,
     private val stockQueryService: StockQueryService,
-) {
-    fun createNotificationMessagesByScheduledTime(time: Int) {
+) : CreateNotificationUseCase {
+   override fun createNotificationMessagesByScheduledTime(time: Int) {
         val analysisMap = stockQueryService.fetchAllAnalysisStocks()
             .associateBy { it.stockMarket }
 

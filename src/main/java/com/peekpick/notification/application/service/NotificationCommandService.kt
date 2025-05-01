@@ -1,4 +1,4 @@
-package com.peekpick.notification.application
+package com.peekpick.notification.application.service
 
 import com.peekpick.notification.domain.NotificationMessage
 import com.peekpick.notification.domain.NotificationRepository
