@@ -4,7 +4,7 @@ import com.peekpick.member.application.MemberApplicationData;
 
 import java.util.List;
 
-public record MemberInformationPayload() {
+public record MemberCommandPayload() {
 
     public record InformationRequest(
             String nickname,

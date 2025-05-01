@@ -3,19 +3,24 @@ package com.peekpick.member.application;
 import com.peekpick.member.domain.model.Member;
 import org.springframework.stereotype.Service;
 
-@Service
-public class MemberInformationService {
-    private final MemberQueryService memberQueryService;
-    private final MemberCommandService memberCommandService;
+public interface MemberInformationUseCase {
+    MemberApplicationData.MemberInfoResult register(MemberApplicationData.MemberRegistration command);
+    MemberApplicationData.MemberInfoResult update(MemberApplicationData.MemberModification command);
 
-    public MemberInformationService(
+@Service
+class MemberInformationUseCaseImpl implements MemberInformationUseCase {
+    private final MemberQueryService memberQueryService;
+    private final com.peekpick.member.application.MemberCommandService memberCommandService;
+
+    public MemberInformationUseCaseImpl(
             MemberQueryService memberQueryService,
-            MemberCommandService memberCommandService
+            com.peekpick.member.application.MemberCommandService memberCommandService
     ) {
         this.memberQueryService = memberQueryService;
         this.memberCommandService = memberCommandService;
     }
 
+    @Override
     public MemberApplicationData.MemberInfoResult register(MemberApplicationData.MemberRegistration command) {
         if (memberQueryService.existsByEmail(command.email())) {
             throw new IllegalArgumentException("Email already exists");
@@ -26,6 +31,7 @@ public class MemberInformationService {
 
     }
 
+    @Override
     public MemberApplicationData.MemberInfoResult update(MemberApplicationData.MemberModification command) {
         final var member = memberQueryService.findByEmail(command.email());
         final var updatedMember = member.updateEmail(command.email())
@@ -36,4 +42,5 @@ public class MemberInformationService {
         final var savedMember = memberCommandService.save(updatedMember);
         return savedMember.toApplicationData();
     }
+}
 }

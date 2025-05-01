@@ -2,11 +2,11 @@ package com.peekpick.member.presentation;
 
 import com.peekpick.member.application.MemberApplicationData;
 
-public class MemberInformationMapper {
-    public static MemberInformationPayload.InformationResponse mapToResponse(
+public class MemberCommandMapper {
+    public static MemberCommandPayload.InformationResponse mapToResponse(
             MemberApplicationData.MemberInfoResult memberInformation
     ) {
-        return new MemberInformationPayload.InformationResponse(
+        return new MemberCommandPayload.InformationResponse(
                 memberInformation.nickname(),
                 memberInformation.email(),
                 memberInformation.preferenceHour(),
