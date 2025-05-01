@@ -1,8 +1,8 @@
 package com.peekpick.stock.configuration;
 
-import com.peekpick.stock.application.StockAnalysisTasklet;
-import com.peekpick.stock.application.StockFetchingTasklet;
-import com.peekpick.stock.application.StockSavingTasklet;
+import com.peekpick.stock.application.analyzing.StockAnalysisTasklet;
+import com.peekpick.stock.application.fetching.StockFetchingTasklet;
+import com.peekpick.stock.application.saving.StockSavingTasklet;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;

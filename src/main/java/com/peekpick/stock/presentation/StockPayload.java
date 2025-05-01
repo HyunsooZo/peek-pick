@@ -10,14 +10,6 @@ public record StockPayload() {
                 String stockId,
                 String stockCode,
                 String stockMarket
-        ) {
-            public static StockInformation of(
-                    String stockId,
-                    String stockCode,
-                    String stockMarket
-            ) {
-                return new StockInformation(stockId, stockCode, stockMarket);
-            }
-        }
+        ) {}
     }
 }

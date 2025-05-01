@@ -10,8 +10,6 @@ public class GeminiApiProperties {
     private String key;
     private String url;
 
-    // getters & setters
-
     public String getKey() {
         return key;
     }

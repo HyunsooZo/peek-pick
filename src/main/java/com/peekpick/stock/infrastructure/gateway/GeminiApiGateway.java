@@ -31,10 +31,7 @@ public class GeminiApiGateway implements StockAnalysisGateway {
     public StockAnalysisResponse analyze(StockAnalysisRequest request) {
         var responseEntity = restClient.post()
                 .uri(properties.getUrl() + properties.getKey())
-                .headers(httpHeaders -> httpHeaders.add(
-                        HttpHeaders.CONTENT_TYPE,
-                        APPLICATION_JSON_VALUE
-                ))
+                .headers(httpHeaders -> httpHeaders.add(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE))
                 .body(request.toJson())
                 .retrieve() // TODO : Handle errors
                 .toEntity(GeminiResponse.class);

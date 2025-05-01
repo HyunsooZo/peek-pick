@@ -1,5 +1,6 @@
-package com.peekpick.stock.application;
+package com.peekpick.stock.application.fetching;
 
+import com.peekpick.stock.application.StockQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;

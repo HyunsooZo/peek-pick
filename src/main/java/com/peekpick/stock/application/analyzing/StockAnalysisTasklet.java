@@ -1,5 +1,6 @@
-package com.peekpick.stock.application;
+package com.peekpick.stock.application.analyzing;
 
+import com.peekpick.stock.application.StockApplicationData;
 import com.peekpick.stock.domain.model.Stock;
 import org.slf4j.Logger;
 import org.springframework.batch.core.StepContribution;
@@ -15,13 +16,13 @@ import java.util.List;
 @Component
 public class StockAnalysisTasklet implements Tasklet {
 
-    private final StockAnalysisService stockAnalysisService;
+    private final AnalyzeStockUseCase analyzeStockUseCase;
     private final RetryTemplate retryTemplate;
     private final Logger logger;
 
 
-    public StockAnalysisTasklet(StockAnalysisService stockAnalysisService) {
-        this.stockAnalysisService = stockAnalysisService;
+    public StockAnalysisTasklet(AnalyzeStockUseCase analyzeStockUseCase) {
+        this.analyzeStockUseCase = analyzeStockUseCase;
         this.retryTemplate = RetryTemplate.builder().maxAttempts(3).fixedBackoff(1000).build();
         this.logger = org.slf4j.LoggerFactory.getLogger(StockAnalysisTasklet.class);
     }
@@ -40,7 +41,7 @@ public class StockAnalysisTasklet implements Tasklet {
                     var indexNames = stocks.stream().map(Stock::market).map(Enum::name).toList();
                     logger.info("[ANALYZE STOCK TASKLET] Analyzing stocks...");
                     var command = new StockApplicationData.StockAnalysisCommand(indexNames, "init", LocalDateTime.now());
-                    var stockAnalysisResult = stockAnalysisService.analyzeIndex(command);
+                    var stockAnalysisResult = analyzeStockUseCase.analyzeIndex(command);
                     chunkContext.getStepContext().getStepExecution().getExecutionContext().put("stockAnalysisResult", stockAnalysisResult);
                     logger.info("[ANALYZE STOCK TASKLET] Successfully analyzed stocks");
                 }
